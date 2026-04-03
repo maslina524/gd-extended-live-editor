@@ -7,6 +7,7 @@
 #include <Geode/binding/GJGameLevel.hpp>
 #include <Geode/binding/GameManager.hpp>
 #include <Geode/binding/LevelEditorLayer.hpp>
+#include <Geode/binding/GJBaseGameLayer.hpp>
 #include <Geode/loader/Log.hpp>
 #include <arc/time/Sleep.hpp>
 #include <matjson.hpp>
@@ -87,6 +88,7 @@ struct Add {
         editor->createObjectsFromString(objects, false, false);
 
         EditorUI::get()->m_editorLayer->m_currentLayer = current_layer;
+        EditorUI::get()->draw();
         return Response::make_success();
     }
 };
@@ -203,6 +205,24 @@ std::string ReplaceLevelString::globalNewlevelString = {};
 
 GLZ_ACTION_META(ReplaceLevelString)
 
+struct GetSelected {
+    static constexpr auto ACTION_NAME = "GET_SELECTED_OBJECTS";
+    static constexpr auto EDITOR_ACTION = true;
+    std::string action;
+    bool close;
+    Response run(LevelEditorLayer* editor) {
+        std::string ret = "";
+        auto base_layer = GJBaseGameLayer::get();
+        for (GameObject* obj : geode::cocos::CCArrayExt<GameObject*>(editor->m_editorUI->getSelectedObjects())) {
+            ret.append(obj->getSaveString(base_layer));
+        }
+        return Response::make_success(std::move(ret));
+    }
+};
+
+GLZ_ACTION_META(GetSelected)
+
+
 std::vector<Action> g_actions;
 std::mutex g_actionsMutex;
 
@@ -219,6 +239,7 @@ void on_message(websocketpp::connection_hdl hdl, WSServer::message_ptr msg) {
     CHECK_ACTION(Remove, hdl)
     CHECK_ACTION(GetLevelString, hdl)
     CHECK_ACTION(ReplaceLevelString, hdl)
+    CHECK_ACTION(GetSelected, hdl)
 
     log::info("exiting message handler!");
 }

@@ -2,6 +2,7 @@ import asyncio
 import websockets
 import json
 from concurrent.futures import ThreadPoolExecutor
+from pprint import pprint
 
 executor = ThreadPoolExecutor(max_workers=1)
 
@@ -18,7 +19,7 @@ async def communicate():
         max_queue=100         # Allows more messages to sit in the buffer
     ) as websocket:
         
-        payload = {"action": "GET_LEVEL_STRING", "close": False}
+        payload = {"action": "GET_SELECTED_OBJECTS", "close": True}
         await websocket.send(json.dumps(payload))
 
         async for message in websocket:
@@ -30,10 +31,7 @@ async def communicate():
                 resp = await loop.run_in_executor(executor, json.loads, message)
                 
                 if resp.get("status") == "successful":
-                    # Use a slice if you just want to verify it worked without 
-                    # flooding your terminal with 40MB of text
-                    data_sample = str(resp.get("response"))[:100]
-                    print(f"Success! Sample: {data_sample}...")
+                    pprint(resp)
             except Exception as e:
                 print(f"Parsing failed: {e}")
 
