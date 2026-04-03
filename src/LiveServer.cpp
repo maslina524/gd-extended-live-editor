@@ -79,7 +79,14 @@ struct Add {
     bool close;
     Response run(LevelEditorLayer* editor) {
         EditorUI::get()->m_alertShown = true;
+
+        // https://github.com/iAndyHD3/WSLiveEditor/issues/17
+        short current_layer = EditorUI::get()->m_editorLayer->m_currentLayer;
+        EditorUI::get()->m_editorLayer->m_currentLayer = -1;
+
         editor->createObjectsFromString(objects, false, false);
+
+        EditorUI::get()->m_editorLayer->m_currentLayer = current_layer;
         return Response::make_success();
     }
 };
@@ -195,7 +202,6 @@ std::string ReplaceLevelString::globalNewlevelString = {};
 
 
 GLZ_ACTION_META(ReplaceLevelString)
-
 
 std::vector<Action> g_actions;
 std::mutex g_actionsMutex;
