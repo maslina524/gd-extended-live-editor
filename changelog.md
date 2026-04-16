@@ -1,22 +1,4 @@
-# WSLiveEditor Changelog
+# GDExtendedLiveEditor Changelog
 
-## v3.0.0
-- Update to geode v5
-- Chagne websocket library to websocketpp (better stability)
-- Add REPLACE_LEVEL_STRING
-
-## v2.0.0
-- Rewrite the entire thing
-- Add GET_LEVEL_STRING action
-- Changed response json a bit
-- Disconnect clients automatically when leaving editor
-
-## v1.0.2
-- add `COLOR_CHANNEL` action
-- update logo
-- add mod tags
-- add repository and issue links
-## v1.0.1
-- minor changes
-## v1.0.0
+## v1.2.0
 - Rewrite to support geode

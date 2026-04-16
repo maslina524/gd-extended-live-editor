@@ -1,26 +1,17 @@
-![banner](banner.png)
+# GDExtendedLiveEditor
 
+[![Geode](https://img.shields.io/badge/Geode-Mod-2f2f2f)](https://geode-sdk.org/mods/) [![WebSocket](https://img.shields.io/badge/WebSocket-Ready-4f5b93?logo=websocket&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket)  
 
-# What is this?
+this is a powerful fork of [WSLiveEditor](https://github.com/iAndyHD3/WSLiveEditor) that adds advanced real‑time level editing capabilities to Geometry Dash. It opens a WebSocket server inside the game, allowing external programs – written in any language – to add, modify, delete, and query game editor
 
-WSLiveEditor is a helpful tool for quick testing levels that are generated programmatically by a tool, by opening a Websocket Server it allows to remove old objects and add new ones without needing to re-open the editor or restart the game.
+the fork is fully compatible with the original mod and its API
 
-Up on entering the editor, a websocket server will be opened on `127.0.0.1:1313`
+## Fork Features
 
-## Usage (developers)
-Check out the [wiki](../../wiki).
+- **Fixed Object Layering** - fixed [issue](https://github.com/iAndyHD3/WSLiveEditor/issues/17)
+- **Get Selected** - action "GET_SELECTED_OBJECTS" to get the selected objects in the editor
+- **Import GMD** - action "IMPORT_GMD" to mess up .gmd file to your local levels
 
-## FAQ
-Befor opening an issue, look at the [FAQ](../../wiki/FAQ)
+## Original repository
 
-## Bugs/Features/Questions/Discussion
-Open an issue or join the [discord server](https://discord.gg/xb6JWZnk9J)
-
-## Projects using this mod:
-
-- [spwn-rewrite (old, unreleased)](https://github.com/Spu7Nix/SPWN-language/tree/RWRT%C2%B2%E2%81%BB%E1%B5%87%CA%B8%E1%B5%97%E1%B5%89%E1%B6%9C%E1%B5%92%E1%B5%88%E1%B5%89)
-- [G.js](https://github.com/RealSput/G.js)
-- [GD3D](https://github.com/tbvns/GD3D)
-
-
-###### if you wish for your project to apear here, open an issue or contact me on discord or twitter
+[**source**](https://github.com/iAndyHD3/WSLiveEditor) | [**wiki**](https://github.com/iAndyHD3/WSLiveEditor/wiki) | [**releases**](https://github.com/iAndyHD3/WSLiveEditor/releases)
