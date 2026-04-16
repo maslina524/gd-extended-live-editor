@@ -8,6 +8,7 @@
 #include <Geode/binding/GameManager.hpp>
 #include <Geode/binding/LevelEditorLayer.hpp>
 #include <Geode/binding/GJBaseGameLayer.hpp>
+#include <Geode/binding/LocalLevelManager.hpp>
 #include <Geode/loader/Log.hpp>
 #include <arc/time/Sleep.hpp>
 #include <matjson.hpp>
@@ -23,11 +24,15 @@
 
 #include <glaze/glaze.hpp>
 #include <glaze/thread/shared_async_vector.hpp>
+#include <hjfod.gmd-api/include/GMD.hpp>
 
 #include <arc/prelude.hpp>
 
 #include <mutex>
 #include <thread>
+#include <format>
+#include <string>
+#include <fstream>
 
 using websocketpp::connection_hdl;
 using websocketpp::lib::bind;
@@ -78,7 +83,7 @@ struct Add {
     std::string action;
     std::string objects;
     bool close;
-    Response run(LevelEditorLayer* editor) {
+    Response run(LevelEditorLayer* editor  = nullptr) {
         EditorUI::get()->m_alertShown = true;
 
         // https://github.com/iAndyHD3/WSLiveEditor/issues/17
@@ -119,7 +124,7 @@ struct Remove {
     std::string action;
     int group;
     bool close;
-    Response run(LevelEditorLayer* editor) {
+    Response run(LevelEditorLayer* editor  = nullptr) {
         geode::cocos::CCArrayExt<GameObject*> toDelete;
         for (GameObject* obj : geode::cocos::CCArrayExt<GameObject*>(editor->m_objects)) {
             if (hasGroup(obj, group)) {
@@ -150,7 +155,7 @@ struct GetLevelString {
     static constexpr auto EDITOR_ACTION = true;
     std::string action;
     bool close;
-    Response run(LevelEditorLayer* editor) {
+    Response run(LevelEditorLayer* editor  = nullptr) {
         glz::generic s = std::string(editor->getLevelString());
         return Response::make_success(std::move(s));
     }
@@ -179,7 +184,7 @@ struct ReplaceLevelString {
         }
     }
 
-    Response run(LevelEditorLayer* editor) {
+    Response run(LevelEditorLayer* editor  = nullptr) {
         auto pause = EditorPauseLayer::create(editor);
         auto level = editor->m_level;
         if (save) {
@@ -209,8 +214,8 @@ struct GetSelected {
     static constexpr auto ACTION_NAME = "GET_SELECTED_OBJECTS";
     static constexpr auto EDITOR_ACTION = true;
     std::string action;
-    bool close;
-    Response run(LevelEditorLayer* editor) {
+    bool close = true;
+    Response run(LevelEditorLayer* editor = nullptr) {
         std::string ret = "";
         auto base_layer = GJBaseGameLayer::get();
         for (GameObject* obj : geode::cocos::CCArrayExt<GameObject*>(editor->m_editorUI->getSelectedObjects())) {
@@ -222,6 +227,31 @@ struct GetSelected {
 
 GLZ_ACTION_META(GetSelected)
 
+struct ImportGmd {
+    static constexpr auto ACTION_NAME = "IMPORT_GMD";
+    static constexpr auto EDITOR_ACTION = false;
+    std::string action;
+    std::string gmd;
+    bool close = true;
+    Response run(LevelEditorLayer* editor = nullptr) {
+        log::info("{}", editor);
+        std::ofstream outFile("C:\\Users\\Public\\temp.gmd");
+        if (outFile.is_open()) {
+            outFile << gmd;
+            outFile.close();
+        }
+        geode::Result<GJGameLevel*> level = gmd::importGmdAsLevel("C:\\Users\\Public\\temp.gmd");
+        if (level) {
+            LocalLevelManager::get()->m_localLevels->insertObject(*level, 0);
+            log::info("level added!");
+        } else {
+            return Response::make_error("GMD Api Err");
+        }
+        return Response::make_success();
+    }
+};
+
+GLZ_ACTION_META(ImportGmd)
 
 std::vector<Action> g_actions;
 std::mutex g_actionsMutex;
@@ -234,12 +264,14 @@ void on_open(websocketpp::connection_hdl hdl) { log::info("open"); }
 void on_message(websocketpp::connection_hdl hdl, WSServer::message_ptr msg) {
 
     std::string msgStr = msg->get_payload();
+    log::info("Received: {}", msgStr);
 
     CHECK_ACTION(Add, hdl)
     CHECK_ACTION(Remove, hdl)
     CHECK_ACTION(GetLevelString, hdl)
     CHECK_ACTION(ReplaceLevelString, hdl)
     CHECK_ACTION(GetSelected, hdl)
+    CHECK_ACTION(ImportGmd, hdl)
 
     log::info("exiting message handler!");
 }
