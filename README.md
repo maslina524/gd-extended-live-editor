@@ -12,6 +12,10 @@ the fork is fully compatible with the original mod and its API
 - **Get Selected** - action "GET_SELECTED_OBJECTS" to get the selected objects in the editor
 - **Import GMD** - action "IMPORT_GMD" to mess up .gmd file to your local levels
 
+## Usage (developers)
+
+Check out the [wiki](https://github.com/maslina524/gd-extended-live-editor/wiki)
+
 ## Original repository
 
 [**source**](https://github.com/iAndyHD3/WSLiveEditor) | [**wiki**](https://github.com/iAndyHD3/WSLiveEditor/wiki) | [**releases**](https://github.com/iAndyHD3/WSLiveEditor/releases)
