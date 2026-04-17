@@ -55,3 +55,7 @@
 node_modules
 examples/js/package-lock.json
 *.txt
+
+# examples
+**/examples
+*.py
