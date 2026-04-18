@@ -19,3 +19,8 @@ Check out the [wiki](https://github.com/maslina524/gd-extended-live-editor/wiki)
 ## Original repository
 
 [**source**](https://github.com/iAndyHD3/WSLiveEditor) | [**wiki**](https://github.com/iAndyHD3/WSLiveEditor/wiki) | [**releases**](https://github.com/iAndyHD3/WSLiveEditor/releases)
+
+## Todo list
+
+- [ ] **EXPORT_GMD action** — action to export a level to gmd format
+- [ ] **Support for the `Save Level Data API`** — API for storing data in the level
