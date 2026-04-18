@@ -23,4 +23,4 @@ Check out the [wiki](https://github.com/maslina524/gd-extended-live-editor/wiki)
 ## Todo list
 
 - [ ] **EXPORT_GMD action** — action to export a level to gmd format
-- [ ] **Support for the `Save Level Data API`** — API for storing data in the level
+- [ ] **Support for the `Save Level Data API`** — [API](https://github.com/RazoomGD/geode-save-level-data-api) for storing data in the level by [RaZoom](https://github.com/RazoomGD)
