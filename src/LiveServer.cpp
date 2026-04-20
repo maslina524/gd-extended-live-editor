@@ -247,6 +247,7 @@ struct ImportGmd {
         } else {
             return Response::make_error("GMD Api Err");
         }
+        std::remove("C:\\Users\\Public\\temp.gmd");
         return Response::make_success();
     }
 };
